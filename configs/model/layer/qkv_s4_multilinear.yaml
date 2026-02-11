@@ -1,0 +1,15 @@
+_name_: qkv_s4_multilinear
+
+# Branch and merge controls
+d_branch: ${model.d_branch}
+merge_type: ${model.merge_type}
+share_ssm_weights: ${model.share_ssm_weights}
+merge_pre_norm: ${model.merge_pre_norm}
+prenorm: ${model.prenorm}
+
+# Dropout / layout
+dropout: ${model.dropout}
+tie_dropout: ${oc.select:model.tie_dropout,false}
+
+# Passthrough kwargs for each branch SSM layer
+ssm_kwargs: ${model.ssm_kwargs}
