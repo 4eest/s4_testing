@@ -1,0 +1,40 @@
+defaults:
+  - base
+  - override layer: qkv_s4_multilinear
+
+_name_: model
+
+# The new layer includes its own residual and optional norm placement.
+residual: null
+norm: null
+
+# QKV branch / merge settings
+d_branch: ${.d_model}
+merge_type: gated
+share_ssm_weights: false
+merge_pre_norm: false
+
+# Forwarded to branch SSM modules (uses the integrated S4Block path)
+ssm_kwargs:
+  layer: fftconv
+  activation: gelu
+  final_act: null
+  gate: null
+  bottleneck: null
+  bidirectional: false
+  mode: nplr
+  init: legs
+  rank: 1
+  dt_min: 0.001
+  dt_max: 0.1
+  dt_transform: softplus
+  lr:
+    dt: 0.001
+    A: 0.001
+    B: 0.001
+  wd: 0.0
+  n_ssm: 1
+  drop_kernel: 0.0
+  deterministic: false
+  l_max: ${oc.select:dataset.__l_max,null}
+  verbose: true
